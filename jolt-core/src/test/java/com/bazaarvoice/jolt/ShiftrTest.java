@@ -19,6 +19,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 public class ShiftrTest {
@@ -108,5 +109,27 @@ public class ShiftrTest {
         Object actual = shiftr.transform( input );
 
         JoltTestUtil.runDiffy( "failed case " + testPath, expected, actual );
+    }
+    @Test
+    public void test(){
+        List chainrSpecJSON =  JsonUtils.classpathToList("/json/test/sepc.json");
+        Chainr chainr = Chainr.fromSpec( chainrSpecJSON );
+
+        Object inputJSON = JsonUtils.classpathToObject("/json/test/test.json");
+
+//        Object inputJSON = JsonUtils.jsonToObject("{\n" +
+//                "  \"MainArray\": {\n" +
+//                "    \"mattr1\": \"some_value1\",\n" +
+//                "    \"mattr2\": \"some_value2\",\n" +
+//                "    \"Subarray\": {\n" +
+//                "      \"sattr1\": 1,\n" +
+//                "      \"sattr2\": 2,\n" +
+//                "      \"sattr3\": 3\n" +
+//                "    }\n" +
+//                "  }\n" +
+//                "}");
+        System.out.println("表达式 " +  JsonUtils.toJsonString(chainrSpecJSON));
+        Object transformedOutput = chainr.transform(inputJSON);
+        System.out.println(JsonUtils.toJsonString(transformedOutput));
     }
 }

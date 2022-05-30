@@ -140,6 +140,9 @@ public class ModifierTest {
             Modifier modifier = testCase.getTemplatr( spec );
             Object actual = modifier.transform( input, (Map<String, Object>) context );
             JoltTestUtil.runArrayOrderObliviousDiffy( testCase.name() + " failed case " + testFile, expected, actual );
+            System.out.println("input 输入："+JsonUtils.toJsonString(input));
+            System.out.println("spec ："+JsonUtils.toJsonString(spec));
+            System.out.println("输出 ："+JsonUtils.toJsonString(actual));
         }
     }
 
@@ -291,5 +294,30 @@ public class ModifierTest {
             }
             return Optional.<Object>of( valueLabels.get( max.toString() ) );
         }
+    }
+
+    @Test
+    public void testToJsonString(){
+
+        List chainrSpecJSON =  JsonUtils.jsonToList("[\n" +
+                "      {\n" +
+                "        \"operation\": \"modify-overwrite-beta\",\n" +
+                "        \"spec\": {\n" +
+                "          \"order\": \"=toString\"\n" +
+                "        }\n" +
+                "      }\n" +
+                "    ]");
+        Chainr chainr = Chainr.fromSpec( chainrSpecJSON );
+
+        Object inputJSON = JsonUtils.jsonToObject("{\n" +
+                "      \"order\": {\n" +
+                "        \"order_no\": \"202205096677\",\n" +
+                "        \"name\": \"test\"\n" +
+                "      }\n" +
+                "\n" +
+                "    }");
+        Object transformedOutput = chainr.transform(inputJSON);
+        System.out.println(transformedOutput);
+
     }
 }
